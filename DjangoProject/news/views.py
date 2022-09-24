@@ -16,7 +16,6 @@ def get_category(request, category_id):
 
 
 def view_news(requesr, news_id):
-    #news_item = News.objects.get(pk=news_id)
     news_item = get_object_or_404(News, pk=news_id)
     return render(requesr, 'news/view_news.html', {'news_item': news_item})
 
