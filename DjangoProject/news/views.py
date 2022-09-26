@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DeleteView
+from django.views.generic import ListView, DeleteView, CreateView
 from .models import News, Category
 from .forms import NewsForm
 
@@ -38,6 +38,10 @@ class ViewNews(DeleteView):
     template_name = 'news/news_detail.html'
     context_object_name = 'news_item'
 
+
+class CreateNews(CreateView):
+    form_class = NewsForm
+    template_name = 'news/add_news.html'
 '''''
 def index(request):
     news = News.objects.order_by('-created_at')
@@ -54,7 +58,6 @@ def view_news(requesr, news_id):
     news_item = get_object_or_404(News, pk=news_id)
     return render(requesr, 'news/view_news.html', {'news_item': news_item})
 
-'''''
 
 
 def add_news(request):
@@ -66,4 +69,5 @@ def add_news(request):
     else:
         form = NewsForm()
     return render(request, 'news/add_news.html', {'form': form})
+'''''
 
