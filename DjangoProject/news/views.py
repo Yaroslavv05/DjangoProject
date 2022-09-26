@@ -8,10 +8,29 @@ class HomeNews(ListView):
     model = News
     template_name = 'news/index.html'
     context_object_name = 'news'
-    extra_context = {'title': 'Страница с новостями'}
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        extra_context = super().get_context_data(**kwargs)
+        extra_context['title'] = 'Главная страница'
+        return extra_context
 
     def get_queryset(self):
         return News.objects.filter(is_published=True)
+
+
+class NewsByCategory(ListView):
+    model = News
+    template_name = 'news/index.html'
+    context_object_name = 'news'
+    allow_empty = False
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        extra_context = super().get_context_data(**kwargs)
+        extra_context['title'] = Category.objects.get(pk=self.kwargs['category_id'])
+        return extra_context
+
+    def get_queryset(self):
+        return News.objects.filter(category_id=self.kwargs['category_id'], is_published=True)
 
 
 def index(request):
