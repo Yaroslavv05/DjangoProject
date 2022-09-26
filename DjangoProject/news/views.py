@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DeleteView
 from .models import News, Category
 from .forms import NewsForm
 
 
 class HomeNews(ListView):
     model = News
-    template_name = 'news/index.html'
+    template_name = 'news/home_news_list.html'
     context_object_name = 'news'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -20,7 +20,7 @@ class HomeNews(ListView):
 
 class NewsByCategory(ListView):
     model = News
-    template_name = 'news/index.html'
+    template_name = 'news/home_news_list.html'
     context_object_name = 'news'
     allow_empty = False
 
@@ -33,6 +33,12 @@ class NewsByCategory(ListView):
         return News.objects.filter(category_id=self.kwargs['category_id'], is_published=True)
 
 
+class ViewNews(DeleteView):
+    model = News
+    template_name = 'news/news_detail.html'
+    context_object_name = 'news_item'
+
+'''''
 def index(request):
     news = News.objects.order_by('-created_at')
     return render(request, 'news/index.html', {'news': news, 'title': 'Список новостей', })
@@ -47,6 +53,8 @@ def get_category(request, category_id):
 def view_news(requesr, news_id):
     news_item = get_object_or_404(News, pk=news_id)
     return render(requesr, 'news/view_news.html', {'news_item': news_item})
+
+'''''
 
 
 def add_news(request):
