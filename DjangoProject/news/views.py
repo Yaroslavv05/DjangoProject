@@ -3,7 +3,14 @@ from django.views.generic import ListView, DeleteView, CreateView
 from .models import News, Category
 from .forms import NewsForm
 from .utils import MyMixin
+from django.core.paginator import Paginator
 
+def test(request):
+    objects = ['gg', 'wp', 'bb', 'gg1', 'wp2', 'bb3', 'gg4', 'wp5']
+    paginator = Paginator(objects, 2)
+    page_num = request.GET.get('page', 1)
+    page_objects = paginator.get_page(page_num)
+    return render(request, 'news/test.html', {'page_obj': page_objects})
 
 class HomeNews(MyMixin, ListView):
     model = News
