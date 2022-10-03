@@ -16,7 +16,7 @@ class HomeNews(MyMixin, ListView):
     model = News
     template_name = 'news/home_news_list.html'
     context_object_name = 'news'
-    mixin_pro = 'nello world'
+    mixin_pro = 'hello world'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         extra_context = super().get_context_data(**kwargs)
